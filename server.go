@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/zcalusic/sysinfo"
 )
 
@@ -31,6 +32,12 @@ func healthz(c echo.Context) error {
 
 func main() {
 	e := echo.New()
+
+	// with logger middleware
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "method=${method}, uri=${uri}, status=${status}\n",
+	}))
+
 	//route
 	e.GET("/hello", hello)
 	e.GET("/info", info)
